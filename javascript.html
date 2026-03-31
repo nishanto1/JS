@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Masterclass | Interactive Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #0f172a;
+        --card-bg: rgba(30, 41, 59, 0.7);
+        --accent-color: #16a34a; /* New Premium Green */
+        --accent-hover: #15803d;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --code-bg: #111827;
+        --code-text: #e2e8f0;
+        --comment-color: #4ade80;
+        --info-item-bg: rgba(255, 255, 255, 0.03);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --glass-blur: 20px; /* Enhanced blur */
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-glow: 0 0 20px rgba(22, 163, 74, 0.2);
+      }
+
+      [data-theme="light"] {
+        --bg-color: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.85);
+        --accent-color: #16a34a; /* Consistent Green */
+        --accent-hover: #15803d;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --code-bg: #f1f5f9;
+        --code-text: #1e293b;
+        --comment-color: #16a34a;
+        --info-item-bg: rgba(0, 0, 0, 0.04);
+        --border-color: rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition:
+          background-color 0.4s ease,
+          color 0.4s ease,
+          border-color 0.4s ease;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+        padding-bottom: 80px;
+        overflow-x: hidden;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-color);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-color);
+      }
+
+      header {
+        padding: 100px 20px;
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          #064e3b 0%,
+          #059669 50%,
+          #064e3b 100%
+        );
+        color: white;
+        margin-bottom: -60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: var(--bg-color);
+        clip-path: polygon(0 100%, 100% 100%, 100% 0);
+      }
+
+      h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -2px;
+        margin-bottom: 12px;
+        background: linear-gradient(to right, #fff, #34d399);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleFade 1s ease-out;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        opacity: 0.8;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: sticky;
+        top: 20px;
+        z-index: 100;
+        padding: 10px;
+        background: rgba(15, 23, 42, 0.01);
+        backdrop-filter: blur(8px);
+        border-radius: 50px;
+      }
+
+      #search-bar {
+        flex: 1;
+        min-width: 250px;
+        padding: 14px 28px;
+        border-radius: 50px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-main);
+        backdrop-filter: blur(var(--glass-blur));
+        font-size: 1rem;
+        outline: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+      }
+
+      #search-bar:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 25px rgba(22, 163, 74, 0.3);
+        transform: scale(1.01);
+      }
+
+      .theme-toggle {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        backdrop-filter: blur(var(--glass-blur));
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+      }
+
+      .theme-toggle:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .section-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        transition: var(--transition);
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .section-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .section-card:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 25px 60px rgba(22, 163, 74, 0.15);
+        transform: translateY(-8px) scale(1.01);
+      }
+
+      h2 {
+        color: var(--accent-color);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 30px;
+      }
+
+      .info-item {
+        background: var(--info-item-bg);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        transition: var(--transition);
+      }
+
+      .info-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+
+      .tag {
+        color: var(--accent-color);
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        padding: 45px 25px 25px 25px; /* Extra top padding for terminal header */
+        border-radius: 16px;
+        overflow-x: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.95rem;
+        border: 1px solid var(--border-color);
+        margin-top: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+
+      /* Terminal Header: Window Controls */
+      pre::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff5f56; /* Red control */
+        box-shadow:
+          20px 0 0 #ffbd2e,
+          40px 0 0 #27c93f; /* Yellow & Green controls */
+        z-index: 2;
+      }
+
+      /* Terminal Header: Language Label */
+      pre::after {
+        content: "javascript";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: rgba(0, 0, 0, 0.2);
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid var(--border-color);
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        font-weight: 600;
+      }
+
+      .comment {
+        color: var(--comment-color);
+        font-style: italic;
+      }
+
+      code {
+        color: var(--code-text);
+      }
+
+      .new-badge {
+        background: linear-gradient(to right, #16a34a, #34d399);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 100px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        vertical-align: middle;
+        margin-left: 15px;
+        box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+      }
+
+      footer {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+        font-size: 1rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: 60px;
+      }
+
+      /* List styling */
+      .feature-list {
+        list-style: none;
+        margin-top: 15px;
+      }
+      .feature-list li {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .feature-list li::before {
+        content: "✦";
+        color: var(--accent-color);
+      }
+
+      /* Animations */
+      @keyframes titleFade {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+          filter: blur(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      /* Background Glow */
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(22, 163, 74, 0.05) 0%,
+          transparent 70%
+        );
+        filter: blur(80px);
+        border-radius: 50%;
+        animation: move 20s infinite alternate;
+      }
+      .blob-1 {
+        top: -100px;
+        right: -100px;
+      }
+      .blob-2 {
+        bottom: -100px;
+        left: -100px;
+        animation-delay: -10s;
+      }
+      @keyframes move {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(100px, 100px);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        header {
+          padding: 80px 20px;
+        }
+        .section-card {
+          padding: 25px;
+        }
+        h2 {
+          font-size: 1.5rem;
+        }
+        .container {
+          padding: 0 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+    <header>
+      <h1>🚀 JAVASCRIPT MASTERCLASS</h1>
+      <p class="subtitle">
+        Elevate your coding skills with modern, comprehensive interactive notes
+      </p>
+    </header>
+
+    <div class="container">
+      <div class="controls">
+        <input
+          type="text"
+          id="search-bar"
+          placeholder="Quick find a concept (e.g. Closure, Promise, Map)..."
+        />
+        <button
+          class="theme-toggle"
+          onclick="toggleTheme()"
+          id="theme-toggle-btn"
+        >
+          <span id="theme-icon">🌙</span> Dark Mode
+        </button>
+      </div>
+
+      <main id="content">
+        <!-- 1. Variables -->
+        <section class="section-card visible">
+          <h2>🔹 1. Variables</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A variable is like a storage box where you can save a name,
+                number, or any data to use it later.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                So you don't have to type the same data again and again. You can
+                just use the box name instead.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 When</span>
+              <p>
+                Use <code>const</code> for things that never change (like your
+                birthday) and <code>let</code> for things that update.
+              </p>
+            </div>
+          </div>
+          <pre><code>let name = "Nishant"; <span class="comment">// Declaring a variable that can be changed later</span>
+const age = 21;       <span class="comment">// Declaring a constant piece of data that stays fixed</span>
+var city = "Delhi";   <span class="comment">// Old way of declaring variables (generally avoided today)</span></code></pre>
+        </section>
+
+        <!-- 2. Hoisting -->
+        <section class="section-card visible">
+          <h2>🔹 2. Hoisting</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Hoisting is when JavaScript moves your variable and function
+                names to the top before running the code.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It helps the code run smoothly even if you use a function before
+                you actually write it down.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 When</span>
+              <p>
+                This happens automatically in the background every time your
+                code starts running.
+              </p>
+            </div>
+          </div>
+          <pre><code>console.log(a); <span class="comment">// Logs 'undefined' because 'var a' declaration is hoisted to the top</span>
+var a = 10;      <span class="comment">// Now the value 10 is actually assigned to the variable</span>
+
+<span class="comment">// Un-commenting below would throw a ReferenceError due to Temporal Dead Zone</span>
+<span class="comment">// console.log(b); </span>
+<span class="comment">// let b = 20;</span></code></pre>
+        </section>
+
+        <!-- 3. Variable Scope -->
+        <section class="section-card visible">
+          <h2>🔹 3. Variable Scope</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Scope is a rule that decides which parts of your code can "see"
+                and use a specific variable.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It keeps your code clean and safe so different parts don't
+                accidentally mess up each other's data.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Types</span>
+              <p>
+                Global (seen by all), Function (only for one function), and
+                Block (only inside <code>{}</code>).
+              </p>
+            </div>
+          </div>
+          <pre><code>let globalVar = "global"; <span class="comment">// Lives in the highest level (Global Scope)</span>
+
+function test() {
+  let funcVar = "private"; <span class="comment">// Only exists inside this function (Function Scope)</span>
+}
+
+if(true) {
+  let blockVar = "inside"; <span class="comment">// Only exists inside these curly braces (Block Scope)</span>
+}</code></pre>
+        </section>
+
+        <!-- 4. Functions -->
+        <section class="section-card visible">
+          <h2>🔹 4. Functions & Arrow Functions</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A function is a "package" of code that does a specific job when
+                you call its name.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                You can write the logic once and use it many times, making your
+                code much shorter and cleaner.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Use "Arrow functions" in modern code because they are shorter
+                and easier to type.
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// Standard function for adding two numbers</span>
+function add(a, b) {
+  return a + b; <span class="comment">// Result is returned to the caller</span>
+}
+
+<span class="comment">// Same logic written as a modern, shorter Arrow Function</span>
+const addArrow = (a, b) => a + b; <span class="comment">// Arrow functions have implicit return</span></code></pre>
+        </section>
+
+        <!-- New: Closures -->
+        <section class="section-card visible">
+          <h2>🧠 Closures <span class="new-badge">PRO INFO</span></h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A closure is like a function with a "memo" that remembers
+                variables from its birthplace, even after the function moves
+                away.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It helps keep your data safe and private inside a function so
+                nobody else can change it by mistake.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 When</span>
+              <p>
+                Use it when you want to create a "private" variable that only
+                certain functions can touch.
+              </p>
+            </div>
+          </div>
+          <pre><code>function createCounter() {
+  let count = 0; <span class="comment">// Private variable initialized in outer scope</span>
+  return {
+    increment: () => ++count, <span class="comment">// Accesses and modifies 'count' via closure</span>
+    getCount: () => count     <span class="comment">// Accesses 'count' without modifying it</span>
+  };
+}
+
+const counter = createCounter();       <span class="comment">// Outer function runs and returns object</span>
+console.log(counter.increment()); <span class="comment">// 1  // Inner function still has access to 'count'</span>
+console.log(counter.increment()); <span class="comment">// 2  // State is preserved across calls</span>
+console.log(counter.getCount());  <span class="comment">// 2  // Final value of 'count' is retrieved</span></code></pre>
+        </section>
+
+        <!-- 5. Data Types -->
+        <section class="section-card visible">
+          <h2>🔹 5. Data Types</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Data types are just "categories" of values like words (string)
+                or numbers (number).
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It tells the computer how to use the value (like adding numbers
+                or joining two words).
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Types</span>
+              <p>
+                Simple ones (like 10 or "A") and complex ones (like a list of
+                names or an object).
+              </p>
+            </div>
+          </div>
+          <pre><code>let str = "Hello";      <span class="comment">// String data type (text)</span>
+let num = 10;           <span class="comment">// Number data type (digits)</span>
+let bool = true;        <span class="comment">// Boolean data type (true or false)</span>
+let arr = [1, 2];       <span class="comment">// Array (ordered list of values)</span>
+let obj = { name: "N" }; <span class="comment">// Object (collection of key-value pairs)</span></code></pre>
+        </section>
+
+        <!-- 6. Operators -->
+        <section class="section-card visible">
+          <h2>🔹 6. Operators</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Operators are special symbols like <code>+</code>,
+                <code>-</code>, or <code>=</code> that let you do math or
+                compare values.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                They are the tools you use to build logic, like "if points are
+                more than 10, then win".
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Use <code>===</code> to be very safe when checking if two things
+                are exactly the same.
+              </p>
+            </div>
+          </div>
+          <pre><code>let a = 5, b = 2;       <span class="comment">// Initialize two number values</span>
+console.log(a + b);      <span class="comment">// Addition: Adds 5 and 2 (Result: 7)</span>
+console.log(a > b);      <span class="comment">// Comparison: Checks if 5 is greater than 2 (true)</span>
+console.log(a === "5");  <span class="comment">// Strict Equity: Checks value (5) AND type (Number vs String) (false)</span></code></pre>
+        </section>
+
+        <!-- 7. Conditional Statement -->
+        <section class="section-card visible">
+          <h2>🔹 7. Conditional Statement</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Conditionals are like a "fork in the road" that tells the code
+                to go left or right based on an answer.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Your app needs to make decisions, like "if the password is
+                correct, then log the user in".
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Use <code>if/else</code> for regular checks, or the
+                <code>? :</code> (ternary) for very quick one-line answers.
+              </p>
+            </div>
+          </div>
+          <pre><code>let age = 18;          <span class="comment">// Sample value for testing</span>
+if (age >= 18) {       <span class="comment">// Logical test: If age is 18 or above</span>
+  console.log("Adult"); <span class="comment">// This runs if the condition is TRUE</span>
+} else {
+  console.log("Minor"); <span class="comment">// This runs if the condition is FALSE</span>
+}
+
+<span class="comment">// Ternary shorthand for simple assignments</span>
+let status = age >= 18 ? "Adult" : "Minor"; <span class="comment">// [condition] ? [if true] : [if false]</span></code></pre>
+        </section>
+
+        <!-- 8. Switch -->
+        <section class="section-card visible">
+          <h2>🔹 8. Switch</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A Switch is a cleaner way to handle a long list of "if" checks
+                when you have many different options.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It's much easier to read than writing 10 different
+                <code>if/else</code> statements in a row.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Don't forget the <code>break</code> keyword, otherwise your code
+                will keep running into the next option!
+              </p>
+            </div>
+          </div>
+          <pre><code>let day = 1;      <span class="comment">// Input value to match against cases</span>
+switch (day) {
+  case 1: 
+    console.log("Mon"); <span class="comment">// Runs if day strictly equals 1</span>
+    break;              <span class="comment">// Stops the switch from running into the next case</span>
+  default: 
+    console.log("Other"); <span class="comment">// Runs if no cases match the input</span>
+}</code></pre>
+        </section>
+
+        <!-- 9. Looping -->
+        <section class="section-card visible">
+          <h2>🔹 9. Looping</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A loop is used to repeat the same work over and over again
+                automatically until it's finished.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Instead of typing the same code 100 times, you can just write
+                one loop to do it all for you.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Types</span>
+              <p>
+                <code>for</code> (count 1 to 10), <code>forEach</code> (for
+                every item in a list), <code>for...of</code> (simpler list
+                loop).
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// Count-based loop: starts at 0, runs while i < 3, increments i each time</span>
+for (let i = 0; i < 3; i++) console.log(i); 
+
+let j = 0;
+while (j < 3) { j++; } <span class="comment">// Condition-based loop: runs as long as j < 3</span>
+
+<span class="comment">// Modern 'for...of' loop: extracts the actual values directly from an array</span>
+for (let value of [10, 20]) console.log(value);</code></pre>
+        </section>
+
+        <!-- 10. Array Methods -->
+        <section class="section-card visible">
+          <h2>🔥 10. Array Methods</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Array methods are built-in "superpowers" for lists that let you
+                change or find data very quickly.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                They handle all the hard work of searching and updating lists so
+                you don't have to write complex code.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tips</span>
+              <p>
+                <code>map</code> changes everything in a list;
+                <code>filter</code> picks only specific items you want.
+              </p>
+            </div>
+          </div>
+          <pre><code>const fruits = ["Apple", "Banana"]; <span class="comment">// Starting with a simple list</span>
+
+fruits.push("Mango");   <span class="comment">// Adds "Mango" to the END</span>
+fruits.pop();           <span class="comment">// Removes the LAST item</span>
+fruits.shift();         <span class="comment">// Removes the FIRST item</span>
+fruits.unshift("Kiwi"); <span class="comment">// Adds "Kiwi" to the START</span>
+
+<span class="comment">// slice: Takes a piece of the list (from index 0 to 2)</span>
+const someFruits = fruits.slice(0, 2); 
+
+console.log(fruits.length); <span class="comment">// Tells you how many items are in the list</span>
+
+<span class="comment">// map: Changes every item (e.g., lowercase to UPPERCASE)</span>
+const loudFruits = fruits.map(f => f.toUpperCase()); 
+
+<span class="comment">// filter: Keeps only items that match a rule</span>
+const longNames = fruits.filter(f => f.length > 5);</code></pre>
+        </section>
+
+        <!-- 11. Object -->
+        <section class="section-card visible">
+          <h2>🔹 11. Object</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                An object is a way to group related data together, like a "User
+                Profile" hosting a name and age.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It's much better than having 10 separate variables for one user.
+                Everything stays in one "box".
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Parts</span>
+              <p>
+                <b>Properties</b> are the facts (like age); <b>Methods</b> are
+                the actions (like <code>greet()</code>).
+              </p>
+            </div>
+          </div>
+          <pre><code>let user = {
+  name: "Nishant",  <span class="comment">// A property (fact)</span>
+  age: 21,
+  greet() { 
+    console.log("Hello!"); <span class="comment">// A method (action)</span>
+  }
+};
+
+<span class="comment">// Main Object Methods:</span>
+Object.keys(user);   <span class="comment">// Returns all names: ["name", "age", "greet"]</span>
+Object.values(user); <span class="comment">// Returns all data: ["Nishant", 21, function]</span>
+Object.entries(user);<span class="comment">// Returns pairs: [["name", "Nishant"], ["age", 21]]</span></code></pre>
+        </section>
+        <!-- 12. Destructuring -->
+        <section class="section-card visible">
+          <h2>🔹 12. Destructuring</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Destructuring is a shortcut to quickly "pull out" values from
+                arrays or objects into their own variables.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It saves you from writing <code>let name = user.name</code> over
+                and over again. It's much faster!
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Usage</span>
+              <p>
+                Used a lot in modern libraries like React to handle data in a
+                very clean way.
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// 1. Array Destructuring (order matters)</span>
+const colors = ["Red", "Green", "Blue"];
+const [first, second] = colors; <span class="comment">// first="Red", second="Green"</span>
+
+<span class="comment">// 2. Object Destructuring (name matters)</span>
+const person = { name: "Nishant", age: 21 };
+const { name, age } = person; <span class="comment">// Extracts 'name' and 'age' into variables</span></code></pre>
+        </section>
+
+        <!-- 13. Local Storage -->
+        <section class="section-card visible">
+          <h2>🔹 13. Local Storage</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Local Storage is like a "small locker" in your browser where you
+                can save data even after you close the tab.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It's perfect for saving user settings like "Dark Mode" so the
+                website remembers them next time they visit.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Limit</span>
+              <p>
+                You can only store a small amount of text data (around 5MB), so
+                don't put big files here!
+              </p>
+            </div>
+          </div>
+          <pre><code>localStorage.setItem("user", "Nishant"); <span class="comment">// Saves 'Nishant' under the key 'user'</span>
+let name = localStorage.getItem("user");  <span class="comment">// Retrieves the value for 'user'</span>
+localStorage.removeItem("user");         <span class="comment">// Deletes only the 'user' entry</span>
+localStorage.clear();                    <span class="comment">// Wipes all data from current domain storage</span></code></pre>
+        </section>
+
+        <!-- 14. Exception Handling -->
+        <section class="section-card visible">
+          <h2>🔹 14. Exception Handling</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Exception handling is a "safety net" that catches errors so your
+                whole website doesn't crash.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Mistakes happen (like a bad API call). This lets you show a
+                friendly message instead of a blank screen.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Pattern</span>
+              <p>
+                Use <code>try</code> for the risky code, <code>catch</code> to
+                handle the error, and <code>finally</code> for the cleanup.
+              </p>
+            </div>
+          </div>
+          <pre><code>try {
+  let x = y; <span class="comment">// This will fail because 'y' hasn't been defined</span>
+} catch (err) {
+  console.log("Error: " + err.message); <span class="comment">// Execution jumps here on failure</span>
+} finally {
+  console.log("Cleanup"); <span class="comment">// This block runs regardless of success or failure</span>
+}</code></pre>
+        </section>
+
+        <!-- 15. Sync vs Async -->
+        <section class="section-card visible">
+          <h2>🔹 15. Sync vs Async</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Sync code runs "one-by-one" in order. Async code lets the
+                computer do other work while waiting for a task.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It stops your website from "freezing" while waiting for a slow
+                task like downloading an image.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Real Life</span>
+              <p>
+                Sync is like a queue at a bank; Async is like a restaurant pager
+                that rings when your food is ready.
+              </p>
+            </div>
+          </div>
+          <pre><code>console.log("Start"); <span class="comment">// Runs immediately (Synchronous)</span>
+
+<span class="comment">// Runs in the background, executes the arrow function after 1000ms</span>
+setTimeout(() => console.log("Async"), 1000); 
+
+console.log("End");   <span class="comment">// Runs immediately after "Start", before "Async"</span></code></pre>
+        </section>
+
+        <!-- 16. Promises -->
+        <section class="section-card visible">
+          <h2>🔹 16. Promises & Async/Await</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A Promise is like an "IOU" note. It promises that you will get a
+                result (Success or Failure) later on.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It makes writing "waiting" code much easier than using
+                old-fashioned callbacks.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Modern View</span>
+              <p>
+                Use <code>async/await</code> because it makes your code look
+                clean and simple, like human sentences.
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// Async function waits for a Promise to resolve without freezing the page</span>
+async function getData() {
+  const res = await new Promise(r => r("Done")); <span class="comment">// Pauses here until 'r' is called</span>
+  console.log(res); <span class="comment">// Prints "Done" after the promise is fulfilled</span>
+}
+getData(); <span class="comment">// Initiates the async operation</span></code></pre>
+        </section>
+
+        <!-- 17. DOM -->
+        <section class="section-card visible">
+          <h2>🔹 17. DOM Manipulation</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                The DOM is like a "Remote Control" for your website that lets
+                JavaScript change HTML and CSS.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Without the DOM, your website would be static. This is how you
+                make buttons work or show pop-ups.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Example</span>
+              <p>
+                Clicking a "Like" button and seeing the heart turn red is
+                possible because of the DOM.
+              </p>
+            </div>
+          </div>
+          <pre><code>const btn = document.getElementById("btn"); <span class="comment">// Finds the HTML element with ID 'btn'</span>
+
+<span class="comment">// Listens for a 'click' event and runs the function when it occurs</span>
+btn.addEventListener("click", () => {
+  btn.style.backgroundColor = "blue"; <span class="comment">// Directly changes the element's CSS</span>
+  alert("Interactive!");            <span class="comment">// Triggers a browser pop-up</span>
+});</code></pre>
+        </section>
+
+        <!-- 18. ES6 vs ES7 -->
+        <section class="section-card visible">
+          <h2>🔹 18. ES6 vs ES7+</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                ES6 and ES7 are just "New Versions" or updates to the JavaScript
+                language.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                They bring new shortcuts and features that make your life as a
+                developer much easier and faster.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Summary</span>
+              <p>
+                ES6 brought big changes (Arrow fns, Classes); ES7+ added smaller
+                helpful tools (Includes).
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// ES7 Features</span>
+const hasTwo = [1, 2].includes(2); <span class="comment">// Simple check if element exists (true)</span>
+const cube = 2 ** 3;              <span class="comment">// Exponentiation shorthand: 2 to the power of 3 (8)</span>
+
+<span class="comment">// ES6 Template Literal</span>
+console.log(`The result is ${cube}`); <span class="comment">// Injects code directly into a string</span></code></pre>
+        </section>
+
+        <!-- New: ES modules -->
+        <section class="section-card visible">
+          <h2>📦 ES Modules <span class="new-badge">EXTRA</span></h2>
+          <p>
+            Organize your code into reusable files using <code>import</code> and
+            <code>export</code> statements.
+          </p>
+          <pre><code><span class="comment">// math.js</span>
+export const add = (a, b) => a + b; <span class="comment">// Exposes this function to other files</span>
+export default function multiply(a, b) { return a * b; } <span class="comment">// Main export</span>
+
+<span class="comment">// app.js</span>
+import multiply, { add } from './math.js'; <span class="comment">// Pulls logic from external files</span>
+console.log(add(10, 5)); <span class="comment">// Uses imported function</span></code></pre>
+        </section>
+
+        <!-- Real Life Example -->
+        <section class="section-card visible">
+          <h2>💡 E-Commerce Simulation</h2>
+          <p>
+            A practical demonstration of combining several JS concepts to manage
+            a virtual shopping cart.
+          </p>
+          <pre><code>const cart = [
+  { name: "Laptop", price: 1000, qty: 1 }, <span class="comment">// Defining an array of objects</span>
+  { name: "Mouse", price: 50, qty: 2 }     <span class="comment">// Each object represents a product</span>
+];
+
+<span class="comment">// sum starts at 0, adds (price * qty) for every item in the cart</span>
+const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+<span class="comment">// Creates a new array with only items costing more than $100</span>
+const premium = cart.filter(item => item.price > 100);
+
+<span class="comment">// Loops through the premium list and logs just the names</span>
+premium.forEach(({ name }) => console.log(`Premium item: ${name}`));</code></pre>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>© 2026 JavaScript Masterclass. All rights reserved.</p>
+      <p style="margin-top: 10px; font-size: 0.8rem">
+        Built for modern developers using Vanilla JS & CSS.
+      </p>
+    </footer>
+
+    <script>
+      // Theme Management
+      function setTheme(theme) {
+        const html = document.documentElement;
+        const themeIcon = document.getElementById("theme-icon");
+        const themeBtnText = document.getElementById("theme-toggle-btn");
+
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("js-masterclass-theme", theme);
+
+        if (theme === "light") {
+          themeIcon.innerText = "☀️";
+          themeBtnText.innerHTML = "☀️ Light Mode";
+        } else {
+          themeIcon.innerText = "🌙";
+          themeBtnText.innerHTML = "🌙 Dark Mode";
+        }
+      }
+
+      // Toggle Theme Function
+      function toggleTheme() {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        setTheme(currentTheme === "light" ? "dark" : "light");
+      }
+
+      // Load Saved Theme
+      const savedTheme = localStorage.getItem("js-masterclass-theme") || "dark";
+      setTheme(savedTheme);
+
+      // Search Logic
+      const searchBar = document.getElementById("search-bar");
+      const cards = document.querySelectorAll(".section-card");
+
+      searchBar.addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase().trim();
+
+        cards.forEach((card) => {
+          const title = card.querySelector("h2").innerText.toLowerCase();
+          const body = card.innerText.toLowerCase();
+
+          if (title.includes(term) || body.includes(term)) {
+            card.style.display = "block";
+            setTimeout(() => card.classList.add("visible"), 10);
+          } else {
+            card.classList.remove("visible");
+            setTimeout(() => {
+              if (!card.classList.contains("visible"))
+                card.style.display = "none";
+            }, 300);
+          }
+        });
+      });
+
+      // Intersection Observer for scroll animation
+      const observerOptions = {
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      cards.forEach((card) => observer.observe(card));
+    </script>
+  </body>
+</html>
