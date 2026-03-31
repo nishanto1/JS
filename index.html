@@ -450,7 +450,8 @@
           onclick="toggleTheme()"
           id="theme-toggle-btn"
         >
-          <span id="theme-icon">🌙</span> Dark Mode
+          <span id="theme-icon">🌙</span>
+          <span id="theme-text">Light Mode</span>
         </button>
       </div>
 
@@ -1169,32 +1170,806 @@ const premium = cart.filter(item => item.price > 100);
 <span class="comment">// Loops through the premium list and logs just the names</span>
 premium.forEach(({ name }) => console.log(`Premium item: ${name}`));</code></pre>
         </section>
+        <!-- JSON -->
+        <section class="section-card visible">
+          <h2>📦 JSON (Data Transfer)</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                JSON is like a "Universal Language" for data. It's how websites
+                talk to servers. It looks just like a JavaScript object but it's
+                actually just a text string.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Computers can't send "live objects" over the internet. We have
+                to turn them into text (Stringify) first, and then turn them
+                back into objects (Parse) when they arrive.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Commands</span>
+              <p>
+                <code>JSON.stringify()</code> = Object to Text. <br />
+                <code>JSON.parse()</code> = Text to Object.
+              </p>
+            </div>
+          </div>
+          <pre><code>const user = { name: "Nishant", age: 21 };
+
+<span class="comment">// 1. Turn object into a text string to send to a server</span>
+const jsonString = JSON.stringify(user); 
+
+<span class="comment">// 2. Take text from a server and turn it back into a JS object</span>
+const userData = JSON.parse(jsonString);</code></pre>
+        </section>
+
+        <!-- Debugging -->
+        <section class="section-card visible">
+          <h2>🔍 Debugging Tips</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 The Goal</span>
+              <p>
+                Debugging is the art of finding "bugs" (mistakes) in your code.
+                Don't guess—check!
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Pro Tip</span>
+              <p>
+                Use <code>console.table()</code> to see large arrays or objects
+                in a neat table. Use <code>debugger;</code> to pause your code
+                exactly where you want.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Warning</span>
+              <p>
+                Always remove your <code>console.log</code> tests before
+                uploading your final project to the internet!
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// 1. The classic check</span>
+console.log("Check if this runs!");
+
+<span class="comment">// 2. See data in a clean table</span>
+console.table([{ id: 1, name: "Task 1" }, { id: 2, name: "Task 2" }]);
+
+<span class="comment">// 3. Pause the browser's execution here</span>
+<span class="comment">// (Only works if you have 'Inspect' open)</span>
+debugger;</code></pre>
+        </section>
+
+        <!-- ==================== React ==================== -->
+        <div
+          style="
+            text-align: center;
+            margin: 80px 0 60px;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.8;
+          "
+        >
+          -------------------- React --------------------
+        </div>
+
+        <!-- 19. React Intro -->
+        <section class="section-card visible">
+          <h2>⚛️ 19. React Foundations</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                React is a "Lego-style" toolkit for building websites. You
+                create small pieces (Components) and snap them together.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It updates your screen automatically when data changes, so you
+                don't have to manually refresh or rewrite the whole page.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why React?</span>
+              <p>
+                Fast performance, reusable code, and used by top companies like
+                Facebook and Instagram.
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// A simple React Component</span>
+function Welcome() {
+  return &lt;h1&gt;Hello, React!&lt;/h1&gt;; <span class="comment">// This is JSX (HTML inside JS)</span>
+}</code></pre>
+        </section>
+
+        <!-- 20. useState Hook -->
+        <section class="section-card visible">
+          <h2>🔹 20. useState Hook</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A "Memory Box" for your component. It remembers values (like a
+                counter or a user name) while the user clicks around.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                When you change the state (the memory), React automatically
+                re-renders the component to show the new data on the screen.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Usage</span>
+              <p>
+                Use it for inputs, counters, toggles, or anything that changes
+                based on user action.
+              </p>
+            </div>
+          </div>
+          <pre><code>import { useState } from 'react';
+
+function Counter() {
+  <span class="comment">// 'count' is the value, 'setCount' is the function to change it</span>
+  const [count, setCount] = useState(0); 
+
+  return (
+    &lt;button onClick={() => setCount(count + 1)}&gt;
+      Clicked {count} times
+    &lt;/button&gt;
+  );
+}</code></pre>
+        </section>
+
+        <!-- 21. useEffect Hook -->
+        <section class="section-card visible">
+          <h2>🔹 21. useEffect Hook</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                The "Event Listener" of React. It tells your component: "Do this
+                extra task every time you appear on the screen or data changes."
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Perfect for fetching data from the internet, setting up timers,
+                or manually changing the document title.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Use an empty array <code>[]</code> at the end to run the code
+                ONLY ONCE (when the component first loads).
+              </p>
+            </div>
+          </div>
+          <pre><code>import { useEffect } from 'react';
+
+function DataFetcher() {
+  useEffect(() => {
+    <span class="comment">// This code runs after the component is rendered</span>
+    console.log("Component loaded!");
+
+    return () => console.log("Cleaning up..."); <span class="comment">// Runs when component disappears</span>
+  }, []); <span class="comment">// Empty dependency array = run only on mount</span>
+}</code></pre>
+        </section>
+
+        <!-- 22. useContext Hook -->
+        <section class="section-card visible">
+          <h2>🔹 22. useContext Hook</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A "Teleportation" tool for your data. It lets you send info
+                (like a theme or user profile) to any component without passing
+                it through every single layer (Props Drilling).
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It keeps your code clean. If you have 10 nested components, you
+                can send data directly from Component 1 to Component 10.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 When</span>
+              <p>
+                Use it for global data like "User Authentication", "Language
+                Settings", or "Theme Colors".
+              </p>
+            </div>
+          </div>
+          <pre><code>import { createContext, useContext } from 'react';
+
+const ThemeContext = createContext("dark"); <span class="comment">// Create the context</span>
+
+function MyButton() {
+  const theme = useContext(ThemeContext); <span class="comment">// Directly teleport 'dark' into this child</span>
+  return &lt;button className={theme}&gt;I use {theme}!&lt;/button&gt;;
+}</code></pre>
+        </section>
+
+        <!-- 23. useMemo Hook -->
+        <section class="section-card visible">
+          <h2>🔹 23. useMemo Hook</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A "Caching" tool for expensive math. It tells React: "Remember
+                the result of this calculation and don't do it again unless the
+                input changes."
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                To keep your app fast. Calculating complex things (like sorting
+                10,000 items) on every single click would make your app lag.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Tip</span>
+              <p>
+                Only use it for heavy work. For simple 1+1 math, it actually
+                makes React slower!
+              </p>
+            </div>
+          </div>
+          <pre><code>import { useMemo } from 'react';
+
+function List({ items }) {
+  <span class="comment">// Expensive calculation: only runs when 'items' changes</span>
+  const sortedItems = useMemo(() => {
+    return items.sort((a, b) => a - b);
+  }, [items]); 
+}</code></pre>
+        </section>
+
+        <!-- 24. useRef Hook -->
+        <section class="section-card visible">
+          <h2>🔹 24. useRef Hook</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A "Flashlight" to point at HTML elements directly, or a "Secret
+                Note" that remembers values without triggering a screen refresh.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Sometimes you need to manually focus an input box, scroll to a
+                certain spot, or use old non-React libraries.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 When</span>
+              <p>
+                Use it when you want to "grab" an element directly from the DOM
+                or store values that don't need to be seen on screen.
+              </p>
+            </div>
+          </div>
+          <pre><code>import { useRef } from 'react';
+
+function TextInput() {
+  const inputRef = useRef(null); <span class="comment">// Create the reference pointer</span>
+
+  const focusInput = () => {
+    inputRef.current.focus(); <span class="comment">// Use the ref to manually focus the HTML element</span>
+  };
+
+  return &lt;input ref={inputRef} /&gt;; 
+}</code></pre>
+        </section>
+
+        <!-- 25. Custom Hooks -->
+        <section class="section-card visible">
+          <h2>📦 25. Custom Hooks</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                A way to shrink your complex code into a single, reusable
+                command starting with "use" (like <code>useWindowSize</code>).
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Don't repeat yourself! If you find yourself writing the same
+                state/effect logic in 5 different pages, make it a Custom Hook.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Rules</span>
+              <p>
+                Always start the name with <code>use</code>. Inside, you can use
+                any other React hooks you need!
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// A custom hook to check if user is online</span>
+function useOnlineStatus() {
+  const [isOnline, setIsOnline] = useState(true);
+  <span class="comment">// ...logic to track network status</span>
+  return isOnline;
+}</code></pre>
+        </section>
+
+        <!-- 26. React Router Basics -->
+        <section class="section-card visible">
+          <h2>🛤️ 26. React Router Basics</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                React Router is a "Map" for your website. It helps you show
+                different pages (like "Home" or "About") without refreshing the
+                browser.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It makes your app feel like a mobile app—super fast and smooth.
+                The URL changes, but the page stays alive.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Core Parts</span>
+              <p>
+                <code>BrowserRouter</code> (The Map), <code>Routes</code> (The
+                List), <code>Route</code> (The Destination), and
+                <code>Link</code> (The Button).
+              </p>
+            </div>
+          </div>
+          <pre><code>import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        <span class="comment">// Link is like &lt;a&gt; but doesn't refresh the page</span>
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        <span class="comment">// NavLink knows if it's currently "active" (useful for styling)</span>
+        &lt;NavLink to="/about"&gt;About&lt;/NavLink&gt;
+      &lt;/nav&gt;
+
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</code></pre>
+        </section>
+
+        <!-- 27. Navigation & Data -->
+        <section class="section-card visible">
+          <h2>🧭 27. Navigation & Data Hooks</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 useNavigate</span>
+              <p>
+                A "Manual Steering" tool. Use it to redirect users after an
+                action (like after they click "Login").
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 useParams</span>
+              <p>
+                A "Search Tool" for the URL. If the URL is
+                <code>/user/123</code>, it helps you grab that
+                <code>123</code> easily.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Outlet</span>
+              <p>
+                A "Placeholder" for sub-pages. It tells React: "Put the child
+                pages right here inside the main layout."
+              </p>
+            </div>
+          </div>
+          <pre><code>import { useNavigate, useParams, useLocation, Outlet } from 'react-router-dom';
+
+function Profile() {
+  const navigate = useNavigate();
+  const { id } = useParams(); <span class="comment">// Grabs 'id' from URL like /profile/:id</span>
+  const location = useLocation(); <span class="comment">// Gives info about current URL path</span>
+
+  const goToHome = () => {
+    <span class="comment">// Navigate to home and send some secret data in the 'state'</span>
+    navigate("/", { state: { from: "profile", searchKey: "js" } });
+  };
+
+  return &lt;button onClick={goToHome}&gt;Back to Home&lt;/button&gt;;
+}</code></pre>
+        </section>
+
+        <!-- 28. Redux Toolkit & Persist -->
+        <section class="section-card visible">
+          <h2>🛡️ 28. Redux Toolkit & Persist</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Redux is a "Global Warehouse" for your data. Redux Toolkit (RTK)
+                is the modern, easier way to set it up.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                When your app gets huge, even <code>useContext</code> can become
+                messy. Redux keeps everything organized in one central place.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Persist</span>
+              <p>
+                Redux Persist is the "Save Game" button. It saves your Redux
+                warehouse data in the browser so it doesn't disappear on
+                refresh.
+              </p>
+            </div>
+          </div>
+          <pre><code>import { createSlice, configureStore } from '@reduxjs/toolkit';
+
+<span class="comment">// 1. Create a Slice (A category in the warehouse)</span>
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => { state.value += 1; }
+  }
+});
+
+<span class="comment">// 2. Use it in components with useSelector and useDispatch</span></code></pre>
+        </section>
+
+        <!-- 29. Forms (Formik & Yup) -->
+        <section class="section-card visible">
+          <h2>📝 29. Forms & Validation</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 Formik</span>
+              <p>
+                A "Form Assistant". It handles all the boring stuff like
+                tracking what the user typed and submitting the data.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Yup</span>
+              <p>
+                A "Security Guard". It checks the user's input (like: "Is this a
+                real email?") and blocks the form if they made a mistake.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Because manual form handling in React is very slow and requires
+                too much code. Formik + Yup makes it 10x faster.
+              </p>
+            </div>
+          </div>
+          <pre><code>import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+
+<span class="comment">// Define the rules for the security guard (Yup)</span>
+const SignupSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+});
+
+<span class="comment">// Formik handles the state and submission</span></code></pre>
+        </section>
+
+        <!-- 30. NPM Packages & Ecosystem -->
+        <section class="section-card visible">
+          <h2>📦 30. NPM Packages & Ecosystem</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                NPM is a "Mega Mall" for code. Instead of writing everything
+                from scratch, you can download ready-made tools (Packages) for
+                your project.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 How to Install</span>
+              <p>
+                Open your terminal and type
+                <code>npm install [package-name]</code>. This adds the tool to
+                your <code>node_modules</code> folder.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 How to Use</span>
+              <p>
+                Once installed, just <code>import</code> it at the top of your
+                React file and you're ready to go!
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// 1. Install a package like 'axios' in terminal:</span>
+<span class="comment">// npm install axios</span>
+
+<span class="comment">// 2. Use it in your code:</span>
+import axios from 'axios';
+
+axios.get('https://api.example.com/data');</code></pre>
+        </section>
+        <!-- 31. Props (Component Communication) -->
+        <section class="section-card visible">
+          <h2>💬 31. Props (Passing Data)</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Props is short for "Properties". It's how a Parent component
+                sends info (like a name or color) down to a Child component.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                It makes components reusable! Instead of making 10 different
+                buttons, you make one <code>Button</code> component and pass
+                different text props to it.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Rule</span>
+              <p>
+                Props are "Read-Only". A child component can see the data, but
+                it cannot change it. Only the parent can update the props.
+              </p>
+            </div>
+          </div>
+          <pre><code><span class="comment">// 1. The Child receives the data via 'props'</span>
+function Welcome(props) {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+}
+
+<span class="comment">// 2. The Parent sends the data</span>
+function App() {
+  return &lt;Welcome name="Nishant" /&gt;;
+}</code></pre>
+        </section>
+
+        <!-- 32. Conditional Rendering -->
+        <section class="section-card visible">
+          <h2>🌗 32. Conditional Rendering</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Deciding what to show on the screen based on a condition (like:
+                "If the user is logged in, show 'Logout', otherwise show
+                'Login'").
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Websites are dynamic. You don't want to show everything all at
+                once—only what's relevant to the user right now.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Trick</span>
+              <p>
+                Use the <code>{condition ? 'Yes' : 'No'}</code> (Ternary) or
+                <code>{condition && 'Show Me'}</code> shortcut in JSX.
+              </p>
+            </div>
+          </div>
+          <pre><code>function UserGreeting({ isLoggedIn }) {
+  return (
+    &lt;div&gt;
+      {isLoggedIn ? (
+        &lt;h1&gt;Welcome Back!&lt;/h1&gt;
+      ) : (
+        &lt;h1&gt;Please Sign In.&lt;/h1&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </section>
+
+        <!-- 33. Lists & Keys -->
+        <section class="section-card visible">
+          <h2>📜 33. Lists & Keys</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">👉 What</span>
+              <p>
+                Using the <code>.map()</code> function to turn an array of data
+                (like a list of fruits) into a list of HTML elements.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 The "Key" Rule</span>
+              <p>
+                React needs a unique <code>key</code> for each item in the list
+                so it can track which one changes, moves, or gets deleted.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">👉 Why</span>
+              <p>
+                Without keys, React gets confused when the list change, which
+                can cause weird bugs and slow down your app.
+              </p>
+            </div>
+          </div>
+          <pre><code>const fruits = ["Apple", "Banana", "Orange"];
+
+function FruitList() {
+  return (
+    &lt;ul&gt;
+      {fruits.map((fruit, index) => (
+        <span class="comment">// Always provide a unique 'key'</span>
+        &lt;li key={index}&gt;{fruit}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+        </section>
+        <!-- ==================== INTERVIEW PREP ==================== -->
+        <div
+          style="
+            text-align: center;
+            margin: 80px 0 60px;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.8;
+          "
+        >
+          -------------------- Q&A --------------------
+        </div>
+
+        <!-- JS Interview Questions -->
+        <section class="section-card visible">
+          <h2>🎯 JavaScript Interview Q&A</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">Q1: What is Hoisting?</span>
+              <p>
+                <b>Answer:</b> It's JS's behavior of moving declarations to the
+                top. <code>var</code> is hoisted (available but undefined),
+                while <code>let/const</code> are not available until their line
+                is reached.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q2: Difference between == and ===?</span>
+              <p>
+                <b>Answer:</b> <code>==</code> checks only values (2 == "2" is
+                true). <code>===</code> checks both value and type (2 === "2" is
+                false). Always use <code>===</code>!
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q3: What is a Closure?</span>
+              <p>
+                <b>Answer:</b> A function that remembers the variables from its
+                outer scope even after the outer function has finished running.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q4: Null vs Undefined?</span>
+              <p>
+                <b>Answer:</b> <code>undefined</code> means a variable was
+                created but not given a value yet. <code>null</code> is a value
+                we intentionally give to say "this is empty".
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q5: What is a Promise?</span>
+              <p>
+                <b>Answer:</b> An object representing a task that will finish in
+                the future (like fetching data). it can be Pending, Resolved
+                (Success), or Rejected (Fail).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- React Interview Questions -->
+        <section class="section-card visible">
+          <h2>⚛️ React Interview Q&A</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="tag">Q1: What is Virtual DOM?</span>
+              <p>
+                <b>Answer:</b> A "Lightweight Copy" of the real website. React
+                checks this copy first to see what changed, and only updates the
+                small parts of the real site that actually need it. This makes
+                React super fast!
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q2: Props vs State?</span>
+              <p>
+                <b>Answer:</b> <b>Props</b> are like "Gifts" passed from parents
+                (Read-Only). <b>State</b> is like "Personal Memory" that the
+                component manages itself (Can be changed).
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q3: Why do we use Hooks?</span>
+              <p>
+                <b>Answer:</b> To use features like State and Lifecycle inside
+                Functional Components. Before hooks, we HAD to use complex Class
+                components.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q4: What is the Context API?</span>
+              <p>
+                <b>Answer:</b> A way to share global data (like a user's Login
+                status) across the whole app without passing props manually
+                through every level.
+              </p>
+            </div>
+            <div class="info-item">
+              <span class="tag">Q5: What is a Key in React?</span>
+              <p>
+                <b>Answer:</b> A unique ID given to list items. It helps React
+                efficiently identify which items changed, were added, or removed
+                during a refresh.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
-
-    <footer>
-      <p>© 2026 JavaScript Masterclass. All rights reserved.</p>
-      <p style="margin-top: 10px; font-size: 0.8rem">
-        Built for modern developers using Vanilla JS & CSS.
-      </p>
-    </footer>
 
     <script>
       // Theme Management
       function setTheme(theme) {
         const html = document.documentElement;
         const themeIcon = document.getElementById("theme-icon");
-        const themeBtnText = document.getElementById("theme-toggle-btn");
+        const themeText = document.getElementById("theme-text");
 
         html.setAttribute("data-theme", theme);
         localStorage.setItem("js-masterclass-theme", theme);
 
         if (theme === "light") {
-          themeIcon.innerText = "☀️";
-          themeBtnText.innerHTML = "☀️ Light Mode";
-        } else {
           themeIcon.innerText = "🌙";
-          themeBtnText.innerHTML = "🌙 Dark Mode";
+          themeText.innerText = "Dark Mode";
+        } else {
+          themeIcon.innerText = "☀️";
+          themeText.innerText = "Light Mode";
         }
       }
 
